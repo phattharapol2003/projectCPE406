@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOME</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        background-color: #ffe4e6;
+        color: #333;
+        text-align: center;
+        padding-top: 90px;
+        /* เพิ่มระยะห่างให้รองรับ header */
+    }
+
+    .header {
+        background-color: #fff;
+        padding: 10px 0;
+        /* เพิ่ม Padding ให้ดูสมดุล */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        position: fixed;
+        /* ทำให้ header ติดอยู่ด้านบน */
+        top: 0;
+        /* จัดให้ชิดบนสุด */
+        left: 0;
+        /* ชิดซ้ายสุด */
+        width: 100%;
+        /* ครอบคลุมทั้งความกว้างของหน้าจอ */
+        z-index: 1000;
+        /* ให้อยู่เหนือองค์ประกอบอื่น */
+    }
+</style>
+
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <img src="image/logonew.jpg" alt="โลโก้แมว" class="logo-img">
+            </div>
+
+            <nav class="nav-menu">
+                <ul>
+                    <li><a href="#home" target="_self">HOME</a></li>
+                    <li><a href="ฺBMI.html" target="_self">BMI</a></li>
+                    <li><a href="login.html"><img src="image/logout-icon.png" alt="Logout" style="width: 45px; height: 45px;"></a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <style>
+            .logo-img {
+                height: 70px;
+                /* กำหนดความสูง */
+                width: auto;
+                /* ให้ปรับสัดส่วนอัตโนมัติ */
+                border-radius: 10px;
+                /* มุมมน */
+                object-fit: cover;
+                /* ให้ครอบคลุมพื้นที่ */
+            }
+
+            .container {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                /* เพิ่มช่องว่างระหว่าง logo และเมนู */
+                padding: 0 20px;
+                height: 70px;
+                /* ปรับความสูงตามเนื้อหา */
+
+
+            }
+
+
+            .nav-menu ul {
+                list-style: none;
+                /* ลบจุดหน้ารายการ */
+                margin: 0;
+                /* ลบระยะห่างรอบ */
+                padding: 0;
+                /* ลบระยะห่างภายใน */
+                display: flex;
+                /* แสดงรายการในแนวนอน */
+            }
+
+
+            .nav-menu li {
+                margin-left: 100px;
+                /* ระยะห่างระหว่างแต่ละรายการ */
+            }
+
+            .nav-menu a {
+                text-decoration: none;
+                /* ลบขีดเส้นใต้ */
+                color: #333;
+                /* สีข้อความ */
+                font-weight: bold;
+                /*ตัวหนา*/
+                font-size: 1.5rem;
+                /* ขนาดตัวอักษรที่ใหญ่ขึ้น */
+                padding: 10px 15px;
+                /* เพิ่มพื้นที่รอบข้อความ */
+                border-radius: 5px;
+                /* ทำให้ปุ่มโค้งมนเล็กน้อย */
+                transition: background-color 0.3s ease;
+                /* เอฟเฟกต์เวลาเปลี่ยนสี */
+            }
+
+            .nav-menu a:hover {
+                color: #ff6f91;
+                /* สีเมนูเมื่อชี้เมาส์ */
+            }
+        </style>
+    </header>
+
+    <main class="main-content">
+        <div class="form-container">
+            <div class="circle-container">
+                <img src="image/profile.jpg" alt="profile" class="circle-img">
+            </div>
+
+            <div class="input-group">
+                <label for="name">ชื่อ:</label>
+                <input type="text" id="name" name="name" placeholder="กรอกชื่อของคุณ">
+            </div>
+
+            <div class="input-group">
+                <label for="weight">น้ำหนัก:</label>
+                <input type="text" id="weight" name="weight" placeholder="กรอกน้ำหนักของคุณ">
+            </div>
+
+            <div class="input-group">
+                <label for="height">ส่วนสูง:</label>
+                <input type="text" id="height" name="height" placeholder="กรอกส่วนสูงของคุณ">
+            </div>
+
+            <div class="input-group">
+                <label for="gender">เพศ:</label>
+                <select id="gender" name="gender">
+                    <option value="" disabled selected>เลือกเพศของคุณ</option>
+                    <option value="male">ชาย</option>
+                    <option value="female">หญิง</option>
+                    <option value="other">อื่น ๆ</option>
+                </select>
+            </div>
+
+            <div>
+                <button type="button" id="goToCalculate" class="custom-button">Calculate</button>
+            </div>
+        </div>
+    </main>
+    <script>
+        document.getElementById('goToCalculate').addEventListener('click', function () {
+            // ดึงค่าที่ผู้ใช้กรอกในฟอร์ม
+            const name = document.getElementById('name').value;
+            const weight = document.getElementById('weight').value;
+            const height = document.getElementById('height').value;
+            const gender = document.getElementById('gender').value;
+
+            // ตรวจสอบว่าผู้ใช้กรอกข้อมูลครบถ้วนหรือไม่
+            if (!name || !weight || !height || !gender) {
+                alert('กรุณากรอกข้อมูลให้ครบถ้วน!');
+                return;
+            }
+
+            // บันทึกข้อมูลใน localStorage
+            localStorage.setItem('name', name);
+            localStorage.setItem('weight', weight);
+            localStorage.setItem('height', height);
+            localStorage.setItem('gender', gender);
+
+            // ย้ายไปหน้า calculate.html
+            window.location.href = 'calculate.html';
+        });
+    </script>
+
+    <style>
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            /* จัดให้ทุกอย่างเรียงจากบนลงล่าง */
+            align-items: center;
+            /* จัดให้ทุกอย่างอยู่กลางในแกน X */
+            justify-content: center;
+            /* จัดให้ทุกอย่างอยู่กลางในแกน Y */
+            height: 100vh;
+            /* ให้ container ยืดเต็มความสูงของหน้าจอ */
+        }
+
+        .circle-img {
+            width: 200px;
+            height: 200px;
+            /* ความสูงและความกว้างต้องเท่ากันเพื่อให้เป็นวงกลม */
+            border-radius: 50%;
+            /* ทำให้รูปเป็นวงกลม */
+            border: 5px solid #ff6f91;
+            /* ขอบวงกลมสีชมพู */
+            object-fit: cover;
+            /* ปรับภาพให้พอดีกับวงกลม */
+            margin-bottom: 20px;
+            /* ระยะห่างระหว่างรูปกับฟอร์ม */
+
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #ff6f91;
+            box-shadow: 0 0 4px rgba(255, 111, 145, 0.5);
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+            /* ระยะห่างด้านล่าง */
+        }
+
+        .input-group select {
+            width: 100%;
+            /* กำหนดให้ขนาดของ select กว้างเต็ม */
+            padding: 0.5rem;
+            /* เพิ่มระยะห่างภายใน */
+            border-radius: 5px;
+            /* ทำให้มุมโค้งมน */
+            border: 2px solid #ff6f91;
+            /* ขอบเป็นสีชมพู */
+            background-color: #fff0f6;
+            /* พื้นหลังสีชมพูอ่อน */
+            color: #333;
+            /* สีตัวอักษร */
+            font-size: 1rem;
+            /* ขนาดตัวอักษร */
+            transition: all 0.3s ease;
+            /* เอฟเฟกต์เมื่อมีการเปลี่ยนแปลง */
+        }
+
+        .input-group select:focus {
+            outline: none;
+            /* ลบขอบเมื่อเลือก */
+            border-color: #ff4c8f;
+            /* สีขอบเมื่อมีการเลือก */
+            background-color: #ffe6f0;
+            /* เปลี่ยนพื้นหลังเมื่อเลือก */
+        }
+    </style>
+    <style>
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            /* จัดให้อยู่ในแนวตั้ง */
+            align-items: center;
+            /* จัดให้อยู่ตรงกลางในแนวนอน */
+            justify-content: center;
+            /* จัดให้อยู่กลางในแนวตั้ง */
+            height: 100vh;
+            /* กำหนดความสูงเต็มหน้าจอ */
+        }
+
+        /* ตกแต่ง input group และ select */
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .input-group select:focus {
+            outline: none;
+            /* ลบขอบเมื่อเลือก */
+            border-color: #ff4c8f;
+            /* สีขอบเมื่อมีการเลือก */
+            background-color: #ffe6f0;
+            /* เปลี่ยนพื้นหลังเมื่อเลือก */
+        }
+
+        /* การตกแต่งปุ่ม */
+        /* ปุ่มทั่วไป */
+        .custom-button {
+            display: block;
+            width: 100%;
+            padding: 10px 15px;
+            font-size: 1rem;
+            font-weight: bold;
+            text-align: center;
+            color: white;
+            background-color: #ef38c1;
+            /* สีฟ้า */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* เมื่อวางเมาส์ */
+        .custom-button:hover {
+            background-color: #eb3992;
+            /* สีฟ้าเข้ม */
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        /* เมื่อกดปุ่ม */
+        .custom-button:active {
+            background-color: #e94e77;
+            /* สีฟ้าเข้มกว่า */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+
+
+
+</body>
+
+
+</html>

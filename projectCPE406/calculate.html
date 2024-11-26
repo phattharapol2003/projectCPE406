@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>calculate</title>
+</head>
+
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        background-color: #ffe4e6;
+        color: #333;
+        text-align: center;
+        padding-top: 90px;
+        /* เพิ่มระยะห่างให้รองรับ header */
+    }
+
+    .header {
+        background-color: #fff;
+        padding: 10px 0;
+        /* เพิ่ม Padding ให้ดูสมดุล */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        position: fixed;
+        /* ทำให้ header ติดอยู่ด้านบน */
+        top: 0;
+        /* จัดให้ชิดบนสุด */
+        left: 0;
+        /* ชิดซ้ายสุด */
+        width: 100%;
+        /* ครอบคลุมทั้งความกว้างของหน้าจอ */
+        z-index: 1000;
+        /* ให้อยู่เหนือองค์ประกอบอื่น */
+    }
+</style>
+
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <img src="image/logonew.jpg" alt="โลโก้แมว" class="logo-img">
+            </div>
+
+            <nav class="nav-menu">
+                <ul>
+                    <li><a href="home.html" target="_self">HOME</a></li>
+                    <li><a href="ฺBMI.html" target="_self">BMI</a></li>
+                    <li><a href="login.html"><img src="image/logout-icon.png" alt="Logout" style="width: 45px; height:45px;"></a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <style>
+            .logo-img {
+                height: 70px;
+                /* กำหนดความสูง */
+                width: auto;
+                /* ให้ปรับสัดส่วนอัตโนมัติ */
+                border-radius: 10px;
+                /* มุมมน */
+                object-fit: cover;
+                /* ให้ครอบคลุมพื้นที่ */
+            }
+
+            .container {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                /* เพิ่มช่องว่างระหว่าง logo และเมนู */
+                padding: 0 20px;
+                height: 70px;
+                /* ปรับความสูงตามเนื้อหา */
+
+
+            }
+
+
+            .nav-menu ul {
+                list-style: none;
+                /* ลบจุดหน้ารายการ */
+                margin: 0;
+                /* ลบระยะห่างรอบ */
+                padding: 0;
+                /* ลบระยะห่างภายใน */
+                display: flex;
+                /* แสดงรายการในแนวนอน */
+            }
+
+
+            .nav-menu li {
+                margin-left: 100px;
+                /* ระยะห่างระหว่างแต่ละรายการ */
+            }
+
+            .nav-menu a {
+                text-decoration: none;
+                /* ลบขีดเส้นใต้ */
+                color: #333;
+                /* สีข้อความ */
+                font-weight: bold;
+                /*ตัวหนา*/
+                font-size: 1.5rem;
+                /* ขนาดตัวอักษรที่ใหญ่ขึ้น */
+                padding: 10px 15px;
+                /* เพิ่มพื้นที่รอบข้อความ */
+                border-radius: 5px;
+                /* ทำให้ปุ่มโค้งมนเล็กน้อย */
+                transition: background-color 0.3s ease;
+                /* เอฟเฟกต์เวลาเปลี่ยนสี */
+            }
+
+            .nav-menu a:hover {
+                color: #ff6f91;
+                /* สีเมนูเมื่อชี้เมาส์ */
+            }
+        </style>
+    </header>
+
+    <div class="layout">
+        <div class="box-left" id="infoBox">
+            <div class="circle-container">
+                <img src="image/profile.jpg" alt="profile" class="circle-img">
+            </div>
+            <div class="bmi-result" id="bmiResult">
+                <!-- ผล BMI จะแสดงที่นี่ -->
+            </div>
+        </div>
+
+        <div class="right-column">
+            <div class="box-right-top" id="boxRightTop">
+                <!-- รูปภาพที่แสดงตามเกณฑ์ BMI จะถูกแสดงที่นี่ -->
+            </div>
+            <div class="box-right-bottom" id="boxRightBottom">
+                กล่องที่ 3 (ด้านล่างฝั่งขวา)
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const name = localStorage.getItem('name');
+            const weight = localStorage.getItem('weight');
+            const height = localStorage.getItem('height');
+            const bmiResult = document.getElementById('bmiResult');
+            const boxRightTop = document.getElementById('boxRightTop'); // กำหนด ID เพื่อเลือกกล่องนี้
+            const boxRightBottom = document.getElementById('boxRightBottom'); // กำหนด ID เพื่อเลือกกล่องนี้
+
+            console.log('Weight:', weight, 'Height:', height); // ตรวจสอบค่าจาก localStorage
+
+            if (weight && height) {
+                const weightInKg = parseFloat(weight);
+                const heightInM = parseFloat(height) / 100;
+
+                if (!isNaN(weightInKg) && !isNaN(heightInM)) {
+                    const bmi = weightInKg / (heightInM * heightInM);
+
+                    bmiResult.innerHTML = `
+                <p><strong>BMI:</strong> ${bmi.toFixed(2)}</p>
+            `;
+
+                    let bmiCategory = '';
+                    let bmiMessage = '';
+                    let bmiImage = '';
+                    let bmiAdvice = ''; // ตัวแปรสำหรับเก็บข้อแนะนำ
+
+                    if (bmi < 18.5) {
+                        bmiCategory = `ผอมเกินไป (BMI: ${bmi.toFixed(2)})`;
+                        bmiMessage = `ค่าของ BMI ของคุณคือ ${bmi.toFixed(2)} <br> ซึ่งถือว่า "ผอมเกินไป" ควรเพิ่มน้ำหนัก`;
+                        bmiImage = '<img src="image/thin.png" alt="thin" style="width: 100%; height: auto;">';
+                        bmiAdvice = "ควรเพิ่มน้ำหนักเพื่อสุขภาพที่ดี โดยการทานอาหารที่มีคุณค่าทางโภชนาการสูง และออกกำลังกายเพื่อเพิ่มมวลกล้ามเนื้อ";
+                    } else if (bmi >= 18.5 && bmi < 24) {
+                        bmiCategory = `น้ำหนักปกติ เหมาะสม (BMI: ${bmi.toFixed(2)})`;
+                        bmiMessage = `ค่าของ BMI ของคุณคือ ${bmi.toFixed(2)} <br>ซึ่งถือว่า "น้ำหนักปกติ เหมาะสม"`;
+                        bmiImage = '<img src="image/good.png" alt="good" style="width: 100%; height: auto;">';
+                        bmiAdvice = "น้ำหนักของคุณอยู่ในช่วงปกติและเหมาะสม ขอให้รักษาน้ำหนักในระดับนี้โดยการออกกำลังกายอย่างสม่ำเสมอและรับประทานอาหารที่สมดุล";
+                    } else if (bmi >= 25 && bmi < 30) {
+                        bmiCategory = `อ้วน (BMI: ${bmi.toFixed(2)})`;
+                        bmiMessage = `ค่าของ BMI ของคุณคือ ${bmi.toFixed(2)} <br>ซึ่งถือว่า "อ้วน" ควรลดน้ำหนักเพื่อสุขภาพที่ดี`;
+                        bmiImage = '<img src="image/fat2.png" alt="fat2" style="width: 100%; height: auto;">';
+                        bmiAdvice = "ควรลดน้ำหนักโดยการปรับเปลี่ยนพฤติกรรมการทานอาหารและเพิ่มการออกกำลังกาย เช่น การออกกำลังกายแบบแอโรบิก หรือเวทเทรนนิ่ง";
+                    } else {
+                        bmiCategory = `อ้วนมาก (BMI: ${bmi.toFixed(2)})`;
+                        bmiMessage = `ค่าของ BMI ของคุณคือ ${bmi.toFixed(2)} <br>ซึ่งถือว่า "อ้วนมาก" ควรลดน้ำหนักด่วน!`;
+                        bmiImage = '<img src="image/fat3.png" alt="fat1" style="width: 100%; height: auto;">';
+                        bmiAdvice = "ควรลดน้ำหนักอย่างเร่งด่วน โดยการปรับการทานอาหารและเพิ่มการออกกำลังกายอย่างจริงจัง ควรปรึกษาผู้เชี่ยวชาญทางการแพทย์เพื่อแผนการลดน้ำหนักที่ปลอดภัย";
+                    }
+
+                    bmiResult.innerHTML += `<p><strong>ประเภท BMI:</strong> ${bmiCategory}</p><p>${bmiMessage}</p>`;
+
+                    // แสดงรูปภาพในกล่องด้านขวาบน
+                    boxRightTop.innerHTML = bmiImage;
+
+                    // แสดงข้อแนะนำในกล่องด้านล่างขวา
+                    boxRightBottom.innerHTML = `<p><strong>ข้อแนะนำ:</strong> ${bmiAdvice}</p>`;
+
+                } else {
+                    bmiResult.innerHTML = `<p>ข้อมูลน้ำหนักหรือส่วนสูงไม่ถูกต้อง</p>`;
+                }
+            } else {
+                bmiResult.innerHTML = `<p>ไม่พบข้อมูลน้ำหนักหรือส่วนสูงในระบบ</p>`;
+            }
+        });
+
+    </script>
+
+    <style>
+        .layout {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 20px;
+            margin: 50px auto;
+            padding: 0 20px;
+            width: 90%;
+            max-width: 1200px;
+        }
+
+        .circle-container {
+            width: 100px;
+            height: 100px;
+            overflow: hidden;
+            border-radius: 50%;
+            margin: 0 auto;
+        }
+
+        .circle-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .box-left {
+            padding: 20px;
+
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .bmi-result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .right-column {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            gap: 20px;
+        }
+
+        .box-right-top,
+        .box-right-bottom {
+            background-color: #fffefc;
+            color: black;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .box-right-bottom {
+            background-color: #fffeff;
+            color: rgb(0, 0, 0);
+        }
+    </style>
+</body>
+
+</html>
